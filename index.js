@@ -933,6 +933,27 @@ MongoBuilder.prototype.save = function(collection, options, callback) {
 	return self;
 };
 
+MongoBuilder.prototype.ui = function(collection, callback, onInsert) {
+
+	var self = this;
+
+	self.updateOne(collection, function(err, count) {
+		if (count) {
+			callback(err, false);
+			return;
+		}
+
+		if (onInsert)
+			onInsert.call(self, self);
+
+		self.insert(collection, function(err) {
+			callback(err, true);
+		});
+	});
+
+	return self;
+};
+
 MongoBuilder.prototype.update = function(collection, options, callback) {
 	var self = this;
 

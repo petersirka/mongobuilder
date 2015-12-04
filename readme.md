@@ -218,6 +218,8 @@ builder.removeOne(COLLECTION, function(err, count) {
 
 ### Saving
 
+__Classic document saving__:
+
 ```javascript
 // _id is need to add manually
 builder.set('_id', 'MY_ID');
@@ -225,6 +227,26 @@ builder.set('_id', 'MY_ID');
 // Performs save
 builder.save(COLLECTION, function(err, count) {
     console.log(count);
+});
+```
+
+__Update or Insert__:
+
+```javascript
+// builder.ui(COLLECTION, [callback], [onInsert]);
+
+// Performs first updateOne(), then insert
+builder.ui(COLLECTION, function(err, inserted) {
+    console.log(err, inserted);
+});
+
+builder.ui(COLLECTION, function(err, inserted) {
+    console.log(err, inserted);
+}, function(builder) {
+    // OnInsert delegate
+    // The delegate can change "insert" values
+    builder.set('datecreated', new Date());
+    builder.set('countview', 0);
 });
 ```
 
