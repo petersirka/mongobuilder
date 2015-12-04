@@ -690,6 +690,9 @@ MongoBuilder.prototype.findCount = function(collection, fields, callback) {
 	cursor.count(function(err, count) {
 		if (err)
 			return callback(err);
+		if (!count)
+			return callback(err, [], count);
+
 		cursor = collection.find.apply(collection, arg);
 		if (skip > 0)
 			cursor.skip(skip);
@@ -729,7 +732,7 @@ MongoBuilder.prototype.find = function(collection, fields, callback) {
 		fields = undefined;
 	}
 
-	this.find(collection, { fields: fields }).toArray(callback);
+	this.findCursor(collection, { fields: fields }).toArray(callback);
 	return this;
 };
 
